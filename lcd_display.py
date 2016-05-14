@@ -2,7 +2,7 @@ import i2c_lib
 from time import sleep
 
 # LCD Address
-ADDRESS = 0x3F
+ADDRESS = 0x27
 
 # commands
 LCD_CLEARDISPLAY = 0x01
@@ -52,7 +52,7 @@ Rs = 0b00000001 # Register select bit
 
 class lcd:
   """ 
-  Class to control the 16x2 I2C LCD display from sainsmart from the Raspberry Pi
+  Class to control the 20x4 I2C LCD display from sainsmart from the Raspberry Pi
   """
 
   def __init__(self):
@@ -87,12 +87,16 @@ class lcd:
     self.write_four_bits(mode | ((cmd << 4) & 0xF0))
 
   def display_string(self, string, line):
-    """display a string on the given line of the display, 1 or 2, string is truncated to 16 chars and centred"""
-    centered_string = string.center(16)
+    """display a string on the given line of the display, 1 or 2, string is truncated to 20 chars and centred"""
+    centered_string = string.center(20)
     if line == 1:
       self.write(0x80)
     if line == 2:
       self.write(0xC0)
+    if line == 3:
+      self.write(0x94)
+    if line == 4:
+      self.write(0xD4)
  
     for char in centered_string:
       self.write(ord(char), Rs)
